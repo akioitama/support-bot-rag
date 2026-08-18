@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Login - AI Support System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-box">
+            <h1>User Login</h1>
+            <p class="muted">Sign in as a normal user to use AI chat.</p>
+            <p class="error" id="error"></p>
+            <div class="login-actions">
+                <a id="login-btn" class="button" href="http://localhost:8000/auth/login">Login as user</a>
+            </div>
+            <p><a href="admin-login.html">Admin login</a></p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>
+        initUserLoginPage();
+    </script>
+</body>
+</html>

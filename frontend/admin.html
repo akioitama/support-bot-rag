@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin - AI Support System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topbar">
+        <a class="brand" href="chat.html">AI Support System</a>
+        <nav id="nav"></nav>
+    </div>
+    <div class="page">
+        <div class="panel" id="admin-content">
+            <h1>User Management</h1>
+            <p class="muted">Registered users in the system.</p>
+            <p class="error" id="error"></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Messages</th>
+                    </tr>
+                </thead>
+                <tbody id="users-body"></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>
+        initAdminPage();
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat - AI Support System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topbar">
+        <a class="brand" href="chat.html">AI Support System</a>
+        <nav id="nav"></nav>
+    </div>
+    <div class="page">
+        <div class="panel">
+            <h1 id="welcome">Welcome</h1>
+            <p class="muted">Ask a question. Replies come from the local Ollama assistant.</p>
+            <div id="messages" class="chat-box"></div>
+            <p class="error" id="error"></p>
+            <div class="composer">
+                <textarea id="message" placeholder="Type your message here..."></textarea>
+                <button id="send" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>
+        initChatPage();
+    </script>
+</body>
+</html>
