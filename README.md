@@ -225,15 +225,8 @@ python make_admin.py user@example.com
 ## How to Test the Admin Flow
 
 1. Log in through WorkOS.
-2. Promote that user:
-
-```text
-python make_admin.py user@example.com
-```
-
-3. Refresh or log in again.
-4. Open **Admin**.
-5. View all users.
+2. Open **Admin**.
+3. View all users.
 
 ## How to Test AI Chat
 
