@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 import httpx
 
 from app.config import settings
@@ -14,6 +16,9 @@ UNAVAILABLE_MESSAGE = (
     "Local AI service is unavailable. Please make sure Ollama is running."
 )
 
+# Ollama is stateless, so each request resends the system prompt plus recent turns.
+MAX_HISTORY_TURNS = 20
+
 
 class AIServiceError(Exception):
     """Raised when the local Ollama service cannot produce a response."""
@@ -23,16 +28,28 @@ class AIServiceError(Exception):
         self.message = message
 
 
-def get_ai_response(user_message: str) -> str:
+def _ollama_messages(
+    user_message: str,
+    history: Sequence[tuple[str, str]] | None = None,
+) -> list[dict[str, str]]:
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    for prior_user, prior_assistant in (history or [])[-MAX_HISTORY_TURNS:]:
+        messages.append({"role": "user", "content": prior_user})
+        messages.append({"role": "assistant", "content": prior_assistant})
+    messages.append({"role": "user", "content": user_message})
+    return messages
+
+
+def get_ai_response(
+    user_message: str,
+    history: Sequence[tuple[str, str]] | None = None,
+) -> str:
     """Send a message to the local Ollama model and return the assistant text."""
     url = settings.OLLAMA_BASE_URL.rstrip("/") + "/api/chat"
     payload = {
         "model": settings.OLLAMA_MODEL,
         "stream": False,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_message},
-        ],
+        "messages": _ollama_messages(user_message, history),
     }
 
     try:
