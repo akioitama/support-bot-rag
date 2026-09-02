@@ -40,7 +40,6 @@ project-root/
 │   ├── services/
 │   └── dependencies/
 ├── frontend/
-├── tests/
 ├── make_admin.py
 ├── .env.example
 ├── requirements.txt
@@ -242,14 +241,6 @@ python make_admin.py user@example.com
 3. Type a message such as `How can I reset my password?` and click **Send**.
 4. The backend calls `POST /api/chat`, which calls Ollama, saves the conversation, and returns the reply.
 5. If Ollama is stopped, the chat API returns `503` with a message telling you to start Ollama.
-
-## Automated Tests
-
-The tests mock WorkOS and Ollama. They do not need real API keys or a running model.
-
-```text
-pytest
-```
 
 ## API Routes
 
