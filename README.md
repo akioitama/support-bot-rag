@@ -2,7 +2,7 @@
 
 A basic FastAPI web application with WorkOS login, admin user management, and a local AI support chatbot.
 
-This is an MVP. The goal is working functionality, not a polished product.
+This is an MVP. The goal is working functionality, not a polished product
 
 Normal users can log in and chat with a local AI assistant. Admins can manage users and roles. Authentication comes from WorkOS. The AI runs locally with Ollama. Application data (users, roles, chat history) is stored in SQLite.
 
