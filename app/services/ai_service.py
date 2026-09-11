@@ -45,11 +45,16 @@ def get_ai_response(
     history: Sequence[tuple[str, str]] | None = None,
 ) -> str:
     """Send a message to the local Ollama model and return the assistant text."""
+    return complete_chat(_ollama_messages(user_message, history))
+
+
+def complete_chat(messages: list[dict[str, str]]) -> str:
+    """POST a chat request to Ollama and return the assistant text."""
     url = settings.OLLAMA_BASE_URL.rstrip("/") + "/api/chat"
     payload = {
         "model": settings.OLLAMA_MODEL,
         "stream": False,
-        "messages": _ollama_messages(user_message, history),
+        "messages": messages,
     }
 
     try:

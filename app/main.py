@@ -10,13 +10,18 @@ from app.database import init_db
 from app.routes.admin import router as admin_router
 from app.routes.auth import router as auth_router
 from app.routes.chat import router as chat_router
+from app.routes.documents import admin_router as admin_documents_router
+from app.routes.documents import user_router as documents_router
 from app.routes.users import router as users_router
+from app.services.document_worker import start_worker, stop_worker
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
+    start_worker()
     yield
+    stop_worker()
 
 
 app = FastAPI(
@@ -50,6 +55,8 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(admin_router)
+app.include_router(admin_documents_router)
+app.include_router(documents_router)
 app.include_router(chat_router)
 
 

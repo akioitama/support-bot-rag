@@ -76,14 +76,83 @@ function renderNav(user, currentPage) {
     nav.innerHTML = links.join("");
 }
 
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+function formatInline(text) {
+    return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+function formatAssistantHtml(text) {
+    const lines = String(text || "").replace(/\r\n/g, "\n").split("\n");
+    const html = [];
+    let listType = null;
+
+    function closeList() {
+        if (listType) {
+            html.push(listType === "ul" ? "</ul>" : "</ol>");
+            listType = null;
+        }
+    }
+
+    lines.forEach(function (rawLine) {
+        const line = rawLine.trim();
+        if (!line) {
+            closeList();
+            return;
+        }
+
+        const bullet = line.match(/^[-*]\s+(.+)$/);
+        const numbered = line.match(/^\d+\.\s+(.+)$/);
+        const heading = line.match(/^\*\*(.+)\*\*:?\s*$/) || line.match(/^#{1,3}\s+(.+)$/);
+
+        if (heading && !bullet) {
+            closeList();
+            html.push("<h3>" + formatInline(heading[1].replace(/:$/, "")) + "</h3>");
+            return;
+        }
+        if (bullet) {
+            if (listType !== "ul") {
+                closeList();
+                html.push("<ul>");
+                listType = "ul";
+            }
+            html.push("<li>" + formatInline(bullet[1]) + "</li>");
+            return;
+        }
+        if (numbered) {
+            if (listType !== "ol") {
+                closeList();
+                html.push("<ol>");
+                listType = "ol";
+            }
+            html.push("<li>" + formatInline(numbered[1]) + "</li>");
+            return;
+        }
+        closeList();
+        html.push("<p>" + formatInline(line) + "</p>");
+    });
+    closeList();
+    return html.join("") || "<p></p>";
+}
+
 function appendChatItem(container, who, text) {
     const item = document.createElement("div");
-    item.className = "chat-item" + (who === "You" ? " user" : "");
+    item.className = "chat-item" + (who === "You" ? " user" : " assistant");
     const label = document.createElement("div");
     label.className = "who";
     label.textContent = who;
     const body = document.createElement("div");
-    body.textContent = text;
+    body.className = "msg";
+    if (who === "You") {
+        body.textContent = text;
+    } else {
+        body.innerHTML = formatAssistantHtml(text);
+    }
     item.appendChild(label);
     item.appendChild(body);
     container.appendChild(item);
@@ -152,6 +221,8 @@ async function initChatPage() {
 
     renderNav(user, "chat");
     document.getElementById("welcome").textContent = "Welcome, " + displayName(user);
+    loadDocumentStatus();
+    setInterval(loadDocumentStatus, 4000);
 
     const box = document.getElementById("messages");
     const input = document.getElementById("message");
@@ -226,6 +297,127 @@ async function initAdminPage() {
 
     renderNav(user, "admin");
     await loadUsers();
+    await loadDocuments();
+    const uploadForm = document.getElementById("upload-form");
+    if (uploadForm) {
+        uploadForm.addEventListener("submit", uploadDocument);
+    }
+    setInterval(loadDocuments, 2000);
+}
+
+async function loadDocumentStatus() {
+    const box = document.getElementById("doc-status");
+    if (!box) {
+        return;
+    }
+    try {
+        const response = await api("/api/documents/status");
+        if (!response.ok) {
+            box.textContent = "Could not load document status.";
+            return;
+        }
+        const data = await response.json();
+        box.textContent =
+            "Documents: " +
+            data.ready +
+            " ready, " +
+            data.processing +
+            " processing, " +
+            data.pending +
+            " pending, " +
+            data.failed +
+            " failed.";
+    } catch (error) {
+        box.textContent = "Could not load document status.";
+    }
+}
+
+async function uploadDocument(event) {
+    event.preventDefault();
+    const input = document.getElementById("pdf-file");
+    const statusBox = document.getElementById("upload-status");
+    const errorBox = document.getElementById("error");
+    if (!input || !input.files || !input.files[0]) {
+        statusBox.textContent = "Choose a PDF first.";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
+    statusBox.textContent = "Uploading...";
+    errorBox.textContent = "";
+
+    try {
+        const response = await fetch(API_BASE + "/api/admin/documents", {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+        });
+        if (!response.ok) {
+            statusBox.textContent = "";
+            errorBox.textContent = await readError(response);
+            return;
+        }
+        input.value = "";
+        statusBox.textContent = "Uploaded. Processing will start in the background.";
+        await loadDocuments();
+    } catch (error) {
+        statusBox.textContent = "";
+        errorBox.textContent = "Could not reach the server.";
+    }
+}
+
+async function loadDocuments() {
+    const tbody = document.getElementById("documents-body");
+    if (!tbody) {
+        return;
+    }
+
+    const response = await api("/api/admin/documents");
+    if (!response.ok) {
+        return;
+    }
+
+    const documents = await response.json();
+    tbody.innerHTML = "";
+    documents.forEach(function (item) {
+        const row = document.createElement("tr");
+        row.innerHTML = "<td></td><td></td><td></td><td></td><td class=\"actions\"></td>";
+        row.children[0].textContent = item.filename;
+        const badge = document.createElement("span");
+        badge.className = "status " + (item.status || "");
+        badge.textContent = item.status;
+        row.children[1].appendChild(badge);
+        row.children[2].textContent = String(item.chunk_count || 0);
+        row.children[3].textContent = item.error_message || "";
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "danger";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", function () {
+            deleteDocument(item.id, item.filename);
+        });
+        row.children[4].appendChild(deleteButton);
+        tbody.appendChild(row);
+    });
+}
+
+async function deleteDocument(documentId, filename) {
+    const errorBox = document.getElementById("error");
+    const statusBox = document.getElementById("upload-status");
+    if (!window.confirm("Delete " + filename + "? Chat will no longer use this file.")) {
+        return;
+    }
+    errorBox.textContent = "";
+    const response = await api("/api/admin/documents/" + documentId, { method: "DELETE" });
+    if (!response.ok) {
+        errorBox.textContent = await readError(response);
+        return;
+    }
+    if (statusBox) {
+        statusBox.textContent = "Deleted " + filename + ".";
+    }
+    await loadDocuments();
 }
 
 async function loadUsers() {

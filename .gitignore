@@ -8,3 +8,5 @@ app.db
 .pytest_cache/
 .coverage
 htmlcov/
+uploads/*
+!uploads/.gitkeep

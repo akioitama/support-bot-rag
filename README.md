@@ -1,10 +1,10 @@
-# AI Support System
+# Support Bot RAG
 
-A basic FastAPI web application with WorkOS login, admin user management, and a local AI support chatbot.
+A local support bot that answers from uploaded PDFs (RAG), with WorkOS login and admin user management.
 
 This is an MVP. The goal is working functionality, not a polished product.
 
-Normal users can log in and chat with a local AI assistant. Admins can manage users and roles. Authentication comes from WorkOS. The AI runs locally with Ollama. Application data (users, roles, chat history) is stored in SQLite.
+Normal users log in and chat. Admins upload support PDFs. The bot retrieves matching chunks, then Ollama answers only from that text. If nothing relevant is found, it says so instead of using general knowledge. Authentication is WorkOS. Embeddings and chat run locally with Ollama. Data is stored in SQLite.
 
 ## Features
 
@@ -12,8 +12,9 @@ Normal users can log in and chat with a local AI assistant. Admins can manage us
 - WorkOS authentication (AuthKit)
 - User management
 - Admin and normal user roles
-- AI support chatbot
-- Local Ollama AI (no paid AI API)
+- AI support chatbot that answers from uploaded PDFs
+- Local Ollama chat model and embedding model (no paid AI API)
+- Background PDF processing with visible status
 - SQLite database
 - Chat history
 
@@ -24,7 +25,8 @@ You need:
 - Python 3.11 or newer
 - A WorkOS account and AuthKit application
 - [Ollama](https://ollama.com) installed locally
-- A local Ollama model such as `llama3.2`
+- A local Ollama chat model such as `llama3.2`
+- A local Ollama embedding model such as `nomic-embed-text`
 
 ## Project Structure
 
@@ -40,6 +42,7 @@ project-root/
 │   ├── services/
 │   └── dependencies/
 ├── frontend/
+├── uploads/
 ├── make_admin.py
 ├── .env.example
 ├── requirements.txt
@@ -91,6 +94,7 @@ DATABASE_URL=sqlite:///./app.db
 
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.2
+OLLAMA_EMBED_MODEL=nomic-embed-text
 
 FRONTEND_URL=http://localhost:3000
 
@@ -146,10 +150,11 @@ The AI is free and runs on your machine. It does not use OpenAI, Anthropic, Gemi
 ollama serve
 ```
 
-3. Download the model:
+3. Download the chat model and the embedding model:
 
 ```text
 ollama pull llama3.2
+ollama pull nomic-embed-text
 ```
 
 4. Confirm the model is available:
@@ -158,7 +163,7 @@ ollama pull llama3.2
 ollama list
 ```
 
-You should see `llama3.2` in the list.
+You should see `llama3.2` and `nomic-embed-text` in the list.
 
 5. Start the backend, then start the frontend in a second terminal.
 
@@ -217,7 +222,7 @@ python make_admin.py user@example.com
 4. Open [http://localhost:3000/login.html](http://localhost:3000/login.html).
 5. Click **Login** and complete WorkOS authentication.
 6. You should land on the chat page with role `user`.
-7. Send a message. The assistant reply comes from Ollama.
+7. Send a message. If no PDF is relevant, the bot says it could not find that in the uploaded support documents.
 8. Refresh the page. Previous messages should still appear.
 9. Open [http://localhost:8000/docs](http://localhost:8000/docs) and call `GET /api/admin/users` while logged in as a normal user. The API should return `403 Forbidden`.
 
@@ -233,14 +238,16 @@ python make_admin.py user@example.com
 3. Refresh or log in again.
 4. Open **Admin**.
 5. View all users.
+6. Upload support PDFs. Status should move from `pending` to `processing` to `ready`.
 
 ## How to Test AI Chat
 
-1. Ollama must be running.
+1. Ollama must be running, with `llama3.2` and `nomic-embed-text`.
 2. Log in.
-3. Type a message such as `How can I reset my password?` and click **Send**.
-4. The backend calls `POST /api/chat`, which calls Ollama, saves the conversation, and returns the reply.
-5. If Ollama is stopped, the chat API returns `503` with a message telling you to start Ollama.
+3. On the chat page, check the document status line (ready / processing / pending).
+4. After PDFs are `ready`, ask something that is in those files.
+5. Ask something not in the documents, such as `What is the capital of France?` The bot should say it could not find that in the uploaded support documents.
+6. If Ollama is stopped, the chat API returns `503`.
 
 ## API Routes
 
@@ -254,6 +261,7 @@ python make_admin.py user@example.com
 ### Authenticated
 
 - `GET /api/users/me`
+- `GET /api/documents/status`
 - `POST /api/chat`
 - `GET /api/chat/history`
 
@@ -262,12 +270,15 @@ python make_admin.py user@example.com
 - `GET /api/admin/users`
 - `GET /api/admin/users/{user_id}`
 - `PATCH /api/admin/users/{user_id}/role`
+- `GET /api/admin/documents`
+- `POST /api/admin/documents`
+- `DELETE /api/admin/documents/{document_id}`
 
 Admin authorization is enforced in the backend. Hiding the Admin page in the frontend is not the security control.
 
 ## Roles
 
-- `user`: log in, view profile, use AI chat, view own chat history, log out
-- `admin`: everything a user can do, plus view all registered users
+- `user`: log in, view profile, use AI chat, see document processing status, view own chat history, log out
+- `admin`: everything a user can do, plus view all registered users and upload support PDFs
 
 A user cannot read another user's chat history. History is loaded from the authenticated session, not from a user ID sent by the browser.

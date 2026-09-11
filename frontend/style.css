@@ -166,10 +166,41 @@ button.danger:hover {
     border: 1px solid #d9e2ec;
 }
 
-.chat-item.user {
-    margin-left: auto;
-    background: #e6f0ff;
-    border-color: #c5d8f7;
+.chat-item.assistant {
+    max-width: 90%;
+}
+
+.chat-item .msg p {
+    margin: 0 0 8px 0;
+}
+
+.chat-item .msg p:last-child,
+.chat-item .msg ul:last-child,
+.chat-item .msg ol:last-child {
+    margin-bottom: 0;
+}
+
+.chat-item .msg h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 10px 0 6px 0;
+    color: #102a43;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.chat-item .msg h3:first-child {
+    margin-top: 0;
+}
+
+.chat-item .msg ul,
+.chat-item .msg ol {
+    margin: 0 0 10px 0;
+    padding-left: 18px;
+}
+
+.chat-item .msg li {
+    margin-bottom: 5px;
 }
 
 .chat-item .who {
@@ -228,6 +259,37 @@ th {
 .role.admin {
     background: #d9f2e6;
     color: #147d64;
+}
+
+.status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #e4e7eb;
+}
+
+.status.pending,
+.status.processing {
+    background: #fff3c4;
+    color: #8d6e00;
+}
+
+.status.ready {
+    background: #d9f2e6;
+    color: #147d64;
+}
+
+.status.failed {
+    background: #ffd3d3;
+    color: #9b1b1b;
+}
+
+#upload-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0 0 12px 0;
 }
 
 .actions button {

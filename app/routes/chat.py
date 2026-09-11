@@ -6,7 +6,8 @@ from app.dependencies.auth import get_current_user
 from app.models.chat import ChatMessage
 from app.models.user import User
 from app.schemas.chat import ChatHistoryItem, ChatRequest, ChatResponse
-from app.services.ai_service import AIServiceError, MAX_HISTORY_TURNS, get_ai_response
+from app.services.ai_service import AIServiceError
+from app.services.rag_service import answer_from_documents
 
 router = APIRouter(prefix="/api", tags=["chat"])
 
@@ -17,18 +18,8 @@ def send_chat_message(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    prior = (
-        db.query(ChatMessage)
-        .filter(ChatMessage.user_id == current_user.id)
-        .order_by(ChatMessage.created_at.desc(), ChatMessage.id.desc())
-        .limit(MAX_HISTORY_TURNS)
-        .all()
-    )
-    prior.reverse()
-    history = [(row.message, row.response) for row in prior]
-
     try:
-        ai_text = get_ai_response(payload.message, history)
+        ai_text = answer_from_documents(db, payload.message)
     except AIServiceError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

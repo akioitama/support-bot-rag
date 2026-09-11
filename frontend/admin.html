@@ -27,6 +27,26 @@
                 </thead>
                 <tbody id="users-body"></tbody>
             </table>
+
+            <h2>Support documents</h2>
+            <p class="muted">Upload PDFs. They are processed in the background. Chat uses only ready documents.</p>
+            <form id="upload-form">
+                <input id="pdf-file" type="file" accept=".pdf,application/pdf">
+                <button type="submit">Upload PDF</button>
+            </form>
+            <p class="muted" id="upload-status"></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Status</th>
+                        <th>Chunks</th>
+                        <th>Error</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="documents-body"></tbody>
+            </table>
         </div>
     </div>
     <script src="app.js"></script>

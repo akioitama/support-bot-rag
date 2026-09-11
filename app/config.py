@@ -32,6 +32,13 @@ class Settings(BaseSettings):
 
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3.2"
+    OLLAMA_EMBED_MODEL: str = "nomic-embed-text"
+
+    # RAG: split PDFs into pieces, then find the closest pieces for a question.
+    CHUNK_SIZE: int = 1200
+    CHUNK_OVERLAP: int = 200
+    RAG_TOP_K: int = 8
+    RAG_MIN_SCORE: float = 0.36
 
     FRONTEND_URL: str = "http://localhost:3000"
 
