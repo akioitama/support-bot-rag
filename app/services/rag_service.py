@@ -268,7 +268,7 @@ def search_chunks(
     question: str,
     top_k: int | None = None,
     min_score: float | None = None,
-    require_keywords: bool = True,
+    require_keywords: bool = False,
 ) -> list[tuple[float, Chunk]]:
     """Return the closest ready chunks for a question."""
     k = settings.RAG_TOP_K if top_k is None else top_k
@@ -303,7 +303,7 @@ def search_chunks(
 def answer_from_documents(
     db: Session,
     question: str,
-    require_keywords: bool = True,
+    require_keywords: bool = False,
 ) -> str:
     """Find PDF chunks, then ask Ollama to answer only from those chunks."""
     hits = search_chunks(db, question, require_keywords=require_keywords)

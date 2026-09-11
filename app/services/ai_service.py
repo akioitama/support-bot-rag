@@ -19,6 +19,9 @@ UNAVAILABLE_MESSAGE = (
 # Ollama is stateless, so each request resends the system prompt plus recent turns.
 MAX_HISTORY_TURNS = 20
 
+# Remember llama3.2:1b if .env says llama3.2 and only the tagged model is installed.
+_chat_model: str | None = None
+
 
 class AIServiceError(Exception):
     """Raised when the local Ollama service cannot produce a response."""
@@ -40,6 +43,35 @@ def _ollama_messages(
     return messages
 
 
+def _installed_chat_model() -> str:
+    """Use OLLAMA_MODEL, or a tagged install like llama3.2:1b if that is all Ollama has."""
+    global _chat_model
+    if _chat_model:
+        return _chat_model
+
+    wanted = settings.OLLAMA_MODEL
+    try:
+        data = httpx.get(
+            settings.OLLAMA_BASE_URL.rstrip("/") + "/api/tags",
+            timeout=10.0,
+        ).json()
+    except httpx.HTTPError:
+        return wanted
+
+    names = []
+    if isinstance(data, dict):
+        names = [m.get("name", "") for m in data.get("models", [])]
+    if wanted in names:
+        _chat_model = wanted
+        return wanted
+
+    tagged = [n for n in names if n.startswith(wanted + ":")]
+    if tagged:
+        _chat_model = tagged[0]
+        return _chat_model
+    return wanted
+
+
 def get_ai_response(
     user_message: str,
     history: Sequence[tuple[str, str]] | None = None,
@@ -51,8 +83,9 @@ def get_ai_response(
 def complete_chat(messages: list[dict[str, str]]) -> str:
     """POST a chat request to Ollama and return the assistant text."""
     url = settings.OLLAMA_BASE_URL.rstrip("/") + "/api/chat"
+    model = _installed_chat_model()
     payload = {
-        "model": settings.OLLAMA_MODEL,
+        "model": model,
         "stream": False,
         "messages": messages,
     }
@@ -70,16 +103,16 @@ def complete_chat(messages: list[dict[str, str]]) -> str:
 
     if response.status_code == 404:
         raise AIServiceError(
-            f"The Ollama model '{settings.OLLAMA_MODEL}' was not found. "
-            f"Run: ollama pull {settings.OLLAMA_MODEL}"
+            f"The Ollama model '{model}' was not found. "
+            f"Run: ollama pull {model}"
         )
 
     if response.status_code >= 400:
         error_text = _extract_ollama_error(response)
         if "not found" in error_text.lower():
             raise AIServiceError(
-                f"The Ollama model '{settings.OLLAMA_MODEL}' was not found. "
-                f"Run: ollama pull {settings.OLLAMA_MODEL}"
+                f"The Ollama model '{model}' was not found. "
+                f"Run: ollama pull {model}"
             )
         raise AIServiceError(
             "The local AI service returned an error. Please try again."
