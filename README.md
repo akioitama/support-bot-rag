@@ -2,7 +2,7 @@
 
 A local support bot that answers from uploaded PDFs (RAG), with WorkOS login and admin user management.
 
-This is an MVP. The goal is working functionality, not a polished product.
+This is an MVP. The goal is working functionality, not a polished product
 
 Normal users log in and chat. Admins upload support PDFs. The bot retrieves matching chunks, then Ollama answers only from that text. If nothing relevant is found, it says so instead of using general knowledge. Authentication is WorkOS. Embeddings and chat run locally with Ollama. Data is stored in SQLite.
 
