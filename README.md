@@ -41,6 +41,10 @@ project-root/
 │   ├── routes/
 │   ├── services/
 │   └── dependencies/
+├── eval/
+│   ├── qa_pairs.json
+│   ├── run_eval.py
+│   └── REPORT.md
 ├── frontend/
 ├── uploads/
 ├── make_admin.py
@@ -248,6 +252,22 @@ python make_admin.py user@example.com
 4. After PDFs are `ready`, ask something that is in those files.
 5. Ask something not in the documents, such as `What is the capital of France?` The bot should say it could not find that in the uploaded support documents.
 6. If Ollama is stopped, the chat API returns `503`.
+
+## RAG evaluation
+
+There are 42 questions in `eval/qa_pairs.json`, written from `return_policy.pdf` and `warranty.pdf`. The script scores two things:
+
+- **Retrieval:** did `search_chunks` find the PDF text that contains the expected facts?
+- **Grounding:** did the Ollama answer use those facts, or correctly say it could not find them?
+
+Ollama must be running (`nomic-embed-text` for retrieval, `llama3.2` for full answers):
+
+```text
+python eval/run_eval.py --retrieval-only
+python eval/run_eval.py
+```
+
+It runs **baseline** (cosine similarity only) and **improved** (cosine plus a keyword filter). See `eval/REPORT.md`.
 
 ## API Routes
 

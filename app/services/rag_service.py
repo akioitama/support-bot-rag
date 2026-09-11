@@ -1,5 +1,6 @@
 import json
 import math
+import re
 from pathlib import Path
 
 import httpx
@@ -237,11 +238,37 @@ def process_document(db: Session, document: Document) -> None:
             db.commit()
 
 
+# Tiny words we ignore when matching a question to a chunk by keywords.
+_STOP_WORDS = {
+    "what", "when", "where", "which", "does", "have", "from", "that", "this",
+    "with", "your", "about", "northline", "please", "could", "would", "there",
+    "they", "them", "then", "than", "into", "only", "also", "after", "before",
+    "under", "over", "more", "long", "many", "much", "call", "make", "take",
+    "item", "product", "products", "policy",
+}
+
+
+def _keyword_match(question: str, text: str) -> bool:
+    """True when the chunk shares real words or numbers with the question."""
+    q = question.lower()
+    t = text.lower()
+    numbers = re.findall(r"\d+", q.replace(",", ""))
+    text_nums = re.findall(r"\d+", t.replace(",", ""))
+    if any(n in text_nums for n in numbers if len(n) >= 2):
+        return True
+    words = [w for w in re.findall(r"[a-z]{4,}", q) if w not in _STOP_WORDS]
+    if any(len(w) >= 8 and w in t for w in words):
+        return True
+    hits = sum(1 for w in words if w in t)
+    return hits >= 2
+
+
 def search_chunks(
     db: Session,
     question: str,
     top_k: int | None = None,
     min_score: float | None = None,
+    require_keywords: bool = True,
 ) -> list[tuple[float, Chunk]]:
     """Return the closest ready chunks for a question."""
     k = settings.RAG_TOP_K if top_k is None else top_k
@@ -263,16 +290,23 @@ def search_chunks(
         if not isinstance(vector, list):
             continue
         score = cosine_similarity(query_vector, vector)
-        if score >= floor:
-            scored.append((score, row))
+        if score < floor:
+            continue
+        if require_keywords and not _keyword_match(question, row.text):
+            continue
+        scored.append((score, row))
 
     scored.sort(key=lambda item: item[0], reverse=True)
     return scored[:k]
 
 
-def answer_from_documents(db: Session, question: str) -> str:
+def answer_from_documents(
+    db: Session,
+    question: str,
+    require_keywords: bool = True,
+) -> str:
     """Find PDF chunks, then ask Ollama to answer only from those chunks."""
-    hits = search_chunks(db, question)
+    hits = search_chunks(db, question, require_keywords=require_keywords)
     if not hits:
         return NO_ANSWER
 

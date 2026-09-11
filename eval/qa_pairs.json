@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "question": "How long do I have to return an unused product?",
+    "must_contain": ["14 calendar days"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 2,
+    "question": "What condition must an unused returned item be in?",
+    "must_contain": ["sealed", "original box"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 3,
+    "question": "How long can I return an opened kitchen appliance?",
+    "must_contain": ["7 days"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 4,
+    "question": "Can a used product be returned as unused?",
+    "must_contain": ["cannot be returned as unused"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 5,
+    "question": "When does the restocking fee apply?",
+    "must_contain": ["8 percent", "25,000"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 6,
+    "question": "How soon is a refund paid after the warehouse accepts the return?",
+    "must_contain": ["5 working days"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 7,
+    "question": "How do I start a return?",
+    "must_contain": ["order page", "order number"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 8,
+    "question": "What is the order number format?",
+    "must_contain": ["NL-", "8 digits"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 9,
+    "question": "Can I return a gift card?",
+    "must_contain": ["gift cards", "cannot be returned"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 10,
+    "question": "Can I return software?",
+    "must_contain": ["software", "cannot be returned"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 11,
+    "question": "Can I return custom cut cables?",
+    "must_contain": ["custom cut cables", "cannot be returned"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 12,
+    "question": "How long does store credit last?",
+    "must_contain": ["18 months"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 13,
+    "question": "When can I get a cash refund at the store?",
+    "must_contain": ["15,000"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 14,
+    "question": "What is the unused product return window in calendar days?",
+    "must_contain": ["14"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 15,
+    "question": "Opened kitchen appliances must still be unused to return. What is the window?",
+    "must_contain": ["7 days"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 16,
+    "question": "What restocking fee percent is charged over 25000?",
+    "must_contain": ["8 percent"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 17,
+    "question": "How long is the manufacturer warranty on Northline branded appliances?",
+    "must_contain": ["24 month"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 18,
+    "question": "When does the appliance warranty start?",
+    "must_contain": ["delivery date"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 19,
+    "question": "How long is the labour warranty after a paid installation visit?",
+    "must_contain": ["90 day"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 20,
+    "question": "How long is the warranty on genuine Northline spare parts?",
+    "must_contain": ["12 month"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 21,
+    "question": "What happens if the serial sticker is removed?",
+    "must_contain": ["void"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 22,
+    "question": "Do customer supplied third-party parts have a Northline parts warranty?",
+    "must_contain": ["no Northline parts warranty"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 23,
+    "question": "What phone number do I call to make a warranty claim?",
+    "must_contain": ["021-111-658-658"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 24,
+    "question": "Which cities get on-site TV service for 43 inch and larger TVs?",
+    "must_contain": ["Karachi", "Lahore", "Islamabad"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 25,
+    "question": "What is the travel fee for on-site visits outside those cities?",
+    "must_contain": ["1,500"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 26,
+    "question": "When does Northline replace the unit for a repeated defect?",
+    "must_contain": ["three times"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 27,
+    "question": "How many extra months does Care+ add?",
+    "must_contain": ["12 extra months"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 28,
+    "question": "What is the Care+ accidental damage excess?",
+    "must_contain": ["4,000"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 29,
+    "question": "Is Care+ available on a product priced at 5000?",
+    "must_contain": ["8,000"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 30,
+    "question": "When may a loan refrigerator be offered?",
+    "must_contain": ["5 working days"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 31,
+    "question": "How much hold is placed on the card for a loan unit?",
+    "must_contain": ["10,000"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 32,
+    "question": "Do TVs 43 inches and larger get on-site service?",
+    "must_contain": ["on-site"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 33,
+    "question": "What is the manufacturer warranty length for branded appliances?",
+    "must_contain": ["24 month"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 34,
+    "question": "How do I make a warranty claim?",
+    "must_contain": ["021-111-658-658"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 35,
+    "question": "What cannot be returned besides gift cards?",
+    "must_contain": ["software"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 36,
+    "question": "Does store credit expire?",
+    "must_contain": ["18 months"],
+    "expect_no_answer": false
+  },
+  {
+    "id": 37,
+    "question": "What is the capital of France?",
+    "must_contain": [],
+    "expect_no_answer": true
+  },
+  {
+    "id": 38,
+    "question": "How do I reset my Northline account password?",
+    "must_contain": [],
+    "expect_no_answer": true
+  },
+  {
+    "id": 39,
+    "question": "Do you ship to the United Kingdom?",
+    "must_contain": [],
+    "expect_no_answer": true
+  },
+  {
+    "id": 40,
+    "question": "What is the employee leave policy?",
+    "must_contain": [],
+    "expect_no_answer": true
+  },
+  {
+    "id": 41,
+    "question": "Can I pay with Bitcoin?",
+    "must_contain": [],
+    "expect_no_answer": true
+  },
+  {
+    "id": 42,
+    "question": "Who is the CEO of Northline?",
+    "must_contain": [],
+    "expect_no_answer": true
+  }
+]
