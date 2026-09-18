@@ -255,7 +255,16 @@ python make_admin.py user@example.com
 
 ## RAG evaluation
 
-There are 42 questions in `eval/qa_pairs.json`, written from `return_policy.pdf` and `warranty.pdf`. The script scores two things:
+Grounding on the live Ollama PDF corpus (65 questions):
+
+```text
+python eval/run_grounding_eval.py
+python eval/run_grounding_eval.py --output eval/grounding_after.json
+```
+
+See `eval/GROUNDING_REPORT.md` for before/after metrics.
+
+There are also 42 questions in `eval/qa_pairs.json`, written from `return_policy.pdf` and `warranty.pdf`. That script scores two things:
 
 - **Retrieval:** did `search_chunks` find the PDF text that contains the expected facts?
 - **Grounding:** did the Ollama answer use those facts, or correctly say it could not find them?

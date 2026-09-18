@@ -1,8 +1,11 @@
+import logging
 import threading
 
 from app.database import SessionLocal
 from app.models.document import Document
 from app.services.rag_service import process_document
+
+logger = logging.getLogger(__name__)
 
 # One background thread. It looks for pending PDFs every few seconds.
 _stop = threading.Event()
@@ -38,8 +41,10 @@ def _process_one() -> None:
         )
         if document is None:
             return
+        logger.info("Worker picked document id=%s file=%s", document.id, document.filename)
         process_document(db, document)
     except Exception:
+        logger.exception("Document worker failed")
         db.rollback()
     finally:
         db.close()

@@ -80,7 +80,10 @@ def get_ai_response(
     return complete_chat(_ollama_messages(user_message, history))
 
 
-def complete_chat(messages: list[dict[str, str]]) -> str:
+def complete_chat(
+    messages: list[dict[str, str]],
+    options: dict | None = None,
+) -> str:
     """POST a chat request to Ollama and return the assistant text."""
     url = settings.OLLAMA_BASE_URL.rstrip("/") + "/api/chat"
     model = _installed_chat_model()
@@ -89,6 +92,8 @@ def complete_chat(messages: list[dict[str, str]]) -> str:
         "stream": False,
         "messages": messages,
     }
+    if options:
+        payload["options"] = options
 
     try:
         response = httpx.post(url, json=payload, timeout=120.0)

@@ -37,5 +37,8 @@ class Chunk(Base):
     chunk_index = Column(Integer, nullable=False)
     text = Column(Text, nullable=False)
     embedding = Column(Text, nullable=False, default="")
+    page_start = Column(Integer, nullable=True)
+    page_end = Column(Integer, nullable=True)
+    section = Column(String, nullable=False, default="")
 
     document = relationship("Document", back_populates="chunks")

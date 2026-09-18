@@ -1,0 +1,536 @@
+[
+  {
+    "id": 1,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What two values can the format parameter take?",
+    "must_contain": ["json"],
+    "expected_behavior": "Answer that format can be json or a JSON schema."
+  },
+  {
+    "id": 2,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What does the raw parameter do?",
+    "must_contain": ["templat"],
+    "expected_behavior": "Answer that raw=true applies no formatting to the prompt / disables templating."
+  },
+  {
+    "id": 3,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What is the default keep_alive duration?",
+    "must_contain": [],
+    "must_contain_any": ["5m", "5 minute", "5 min"],
+    "expected_behavior": "Answer that keep_alive defaults to 5m."
+  },
+  {
+    "id": 4,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What format do model names follow?",
+    "must_contain": ["model:tag"],
+    "expected_behavior": "Answer that model names follow a model:tag format."
+  },
+  {
+    "id": 5,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "If a model tag is not provided, what does it default to?",
+    "must_contain": ["latest"],
+    "expected_behavior": "Answer that the tag defaults to latest."
+  },
+  {
+    "id": 6,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "In what unit are all durations returned?",
+    "must_contain": ["nanosecond"],
+    "expected_behavior": "Answer that durations are returned in nanoseconds."
+  },
+  {
+    "id": 7,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "How do you disable streaming responses?",
+    "must_contain": ["stream"],
+    "expected_behavior": "Answer that streaming is disabled by setting stream to false."
+  },
+  {
+    "id": 8,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What HTTP method and path generate a completion?",
+    "must_contain": ["/api/generate"],
+    "expected_behavior": "Answer POST /api/generate."
+  },
+  {
+    "id": 9,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "Which generate parameter is required?",
+    "must_contain": ["model"],
+    "expected_behavior": "Answer that model is required."
+  },
+  {
+    "id": 10,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What thinking levels can the think parameter take?",
+    "must_contain": ["low"],
+    "expected_behavior": "Answer low, medium, high, or max (or boolean)."
+  },
+  {
+    "id": 11,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "How should images be encoded for multimodal models such as llava?",
+    "must_contain": ["base64"],
+    "expected_behavior": "Answer that images are a list of base64-encoded images."
+  },
+  {
+    "id": 12,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What endpoint lists models currently loaded into memory?",
+    "must_contain": [],
+    "must_contain_any": ["/api/ps", "running"],
+    "expected_behavior": "Answer GET /api/ps or List Running Models."
+  },
+  {
+    "id": 13,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What endpoint retrieves the Ollama version?",
+    "must_contain": ["/api/version"],
+    "expected_behavior": "Answer GET /api/version."
+  },
+  {
+    "id": 14,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "What is the default value of the truncate parameter for /api/embed?",
+    "must_contain": ["true"],
+    "expected_behavior": "Answer that truncate defaults to true."
+  },
+  {
+    "id": 15,
+    "category": "exact",
+    "classification": "IN_DOCUMENT",
+    "question": "Which endpoint was superseded by /api/embed?",
+    "must_contain": ["/api/embeddings"],
+    "expected_behavior": "Answer that POST /api/embeddings was superseded by /api/embed."
+  },
+  {
+    "id": 16,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "What does raw=true do?",
+    "must_contain": ["templat"],
+    "expected_behavior": "Same as the raw-parameter fact: no prompt formatting / disable templating."
+  },
+  {
+    "id": 17,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "Which response formats can I request with the format field?",
+    "must_contain": ["json"],
+    "expected_behavior": "json or a JSON schema."
+  },
+  {
+    "id": 18,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How long does a model stay loaded after a request if I do not set keep_alive?",
+    "must_contain": [],
+    "must_contain_any": ["5m", "5 minute", "5 min"],
+    "expected_behavior": "Default keep_alive is 5m."
+  },
+  {
+    "id": 19,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How are Ollama model identifiers written, including the optional version tag?",
+    "must_contain": ["model:tag"],
+    "expected_behavior": "model:tag format."
+  },
+  {
+    "id": 20,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "What tag is used when I omit the version from a model name?",
+    "must_contain": ["latest"],
+    "expected_behavior": "Defaults to latest."
+  },
+  {
+    "id": 21,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "Are timing fields returned in seconds or nanoseconds?",
+    "must_contain": ["nanosecond"],
+    "expected_behavior": "Nanoseconds."
+  },
+  {
+    "id": 22,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How can I get a single JSON object instead of a stream of objects?",
+    "must_contain": ["stream"],
+    "expected_behavior": "Set stream to false."
+  },
+  {
+    "id": 23,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "Which API path do I POST to when I want a model to complete a prompt?",
+    "must_contain": ["/api/generate"],
+    "expected_behavior": "POST /api/generate."
+  },
+  {
+    "id": 24,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "Is the model name optional on generate requests?",
+    "must_contain": ["model"],
+    "expected_behavior": "No; model is required."
+  },
+  {
+    "id": 25,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "If I want a thinking model to think hard, which think setting should I use besides a boolean?",
+    "must_contain": ["high"],
+    "expected_behavior": "A thinking level such as high or max."
+  },
+  {
+    "id": 26,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How do I send a picture to llava through the generate API?",
+    "must_contain": ["base64"],
+    "expected_behavior": "Provide base64-encoded images."
+  },
+  {
+    "id": 27,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How can I see which models are loaded in RAM right now?",
+    "must_contain": [],
+    "must_contain_any": ["/api/ps", "running"],
+    "expected_behavior": "GET /api/ps or List Running Models."
+  },
+  {
+    "id": 28,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "How do I ask the server what Ollama version it is running?",
+    "must_contain": ["/api/version"],
+    "expected_behavior": "GET /api/version."
+  },
+  {
+    "id": 29,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "If embed input is too long, does truncate default to cutting the input or to returning an error?",
+    "must_contain": ["true"],
+    "expected_behavior": "truncate defaults to true (truncates to fit)."
+  },
+  {
+    "id": 30,
+    "category": "paraphrase",
+    "classification": "IN_DOCUMENT",
+    "question": "Should new clients call /api/embeddings or the newer embed endpoint?",
+    "must_contain": ["/api/embed"],
+    "expected_behavior": "Use /api/embed; /api/embeddings is superseded."
+  },
+  {
+    "id": 31,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "What is the capital of France?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 32,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Who won the 2022 FIFA World Cup?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 33,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I bake sourdough bread?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 34,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "What is the employee leave policy?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 35,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Can I pay with Bitcoin?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 36,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "What is the weather in Karachi today?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 37,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Explain quantum entanglement in simple terms.",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 38,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Write a Python function to reverse a linked list.",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 39,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Who is the CEO of Microsoft?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 40,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "What are the side effects of ibuprofen?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 41,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I get a US tourist visa?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 42,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "Translate this sentence into Japanese: the cat sat on the mat.",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 43,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "What is the plot of Hamlet?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 44,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "How many calories are in an avocado?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 45,
+    "category": "off",
+    "classification": "OFF_DOCUMENT",
+    "question": "When is the next solar eclipse visible from Pakistan?",
+    "must_contain": [],
+    "expected_behavior": "Reject; not in the uploaded documents."
+  },
+  {
+    "id": 46,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "What's the pricing for Ollama Cloud?",
+    "must_contain": [],
+    "expected_behavior": "Reject; Cloud pricing is not in the uploaded API docs."
+  },
+  {
+    "id": 47,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I configure OAuth for the Ollama API?",
+    "must_contain": [],
+    "expected_behavior": "Reject; OAuth is not documented in the uploaded files."
+  },
+  {
+    "id": 48,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "What API key header does the Ollama API require?",
+    "must_contain": [],
+    "expected_behavior": "Reject; API keys/auth headers are not in these docs."
+  },
+  {
+    "id": 49,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "What are the rate limits for Ollama Cloud?",
+    "must_contain": [],
+    "expected_behavior": "Reject; rate limits are not documented."
+  },
+  {
+    "id": 50,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I reset my ollama.com account password?",
+    "must_contain": [],
+    "expected_behavior": "Reject; account password reset is not in the API docs."
+  },
+  {
+    "id": 51,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "Does Ollama support SAML single sign-on?",
+    "must_contain": [],
+    "expected_behavior": "Reject; SSO/SAML is not documented."
+  },
+  {
+    "id": 52,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "How much does a hosted Ollama GPU instance cost per hour?",
+    "must_contain": [],
+    "expected_behavior": "Reject; hosted GPU pricing is not in the documents."
+  },
+  {
+    "id": 53,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I connect Ollama to Slack?",
+    "must_contain": [],
+    "expected_behavior": "Reject; Slack integration is not documented."
+  },
+  {
+    "id": 54,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "What Kubernetes Helm chart is officially recommended for Ollama?",
+    "must_contain": [],
+    "expected_behavior": "Reject; Helm/Kubernetes install is not in these files."
+  },
+  {
+    "id": 55,
+    "category": "same_topic",
+    "classification": "OFF_DOCUMENT",
+    "question": "How do I enable GDPR data-retention controls in Ollama?",
+    "must_contain": [],
+    "expected_behavior": "Reject; GDPR/retention controls are not documented."
+  },
+  {
+    "id": 56,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Can the format parameter be set to XML?",
+    "must_contain": ["json"],
+    "must_not_contain": ["xml is supported", "set format to xml"],
+    "expected_behavior": "Say docs only mention json or a JSON schema; do not claim XML is supported."
+  },
+  {
+    "id": 57,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "What keep_alive value should I use for a 24-hour production SLA?",
+    "must_contain": [],
+    "must_not_contain": ["24h is required", "24 hour sla"],
+    "expected_behavior": "May mention default 5m; must not invent an SLA policy."
+  },
+  {
+    "id": 58,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Is temperature 2.5 a valid options value for generate?",
+    "must_contain": [],
+    "must_not_contain": ["2.5 is valid", "maximum temperature is"],
+    "expected_behavior": "Docs mention temperature as a Modelfile option but do not give 2.5 as a valid range."
+  },
+  {
+    "id": 59,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Does /api/generate support websocket streaming?",
+    "must_contain": [],
+    "must_not_contain": ["websocket"],
+    "expected_behavior": "Docs describe JSON object streams, not websockets. Do not claim websocket support."
+  },
+  {
+    "id": 60,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Which quantization type is mandatory when creating a model?",
+    "must_contain": [],
+    "must_not_contain": ["q4_K_M is mandatory", "must use q8_0"],
+    "expected_behavior": "Quantize is optional; do not invent a mandatory type."
+  },
+  {
+    "id": 61,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Can I authenticate to /api/chat with a Bearer token?",
+    "must_contain": [],
+    "must_not_contain": ["bearer", "authorization header"],
+    "expected_behavior": "Auth is not documented; reject or say it is not in the documents."
+  },
+  {
+    "id": 62,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "What is the maximum prompt length for /api/generate?",
+    "must_contain": [],
+    "must_not_contain": ["maximum prompt", "token limit is"],
+    "expected_behavior": "No max prompt length is stated; do not invent a number."
+  },
+  {
+    "id": 63,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Does raw mode still return a context array for follow-up turns?",
+    "must_contain": ["context"],
+    "must_not_contain": [],
+    "expected_behavior": "Docs say raw mode will not return a context. Answer that or refuse extra claims."
+  },
+  {
+    "id": 64,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "How do I set format to json and also bill the request to an organization?",
+    "must_contain": [],
+    "must_not_contain": ["organization", "billing"],
+    "expected_behavior": "JSON format is documented; org billing is not. Must not invent billing."
+  },
+  {
+    "id": 65,
+    "category": "ambiguous",
+    "classification": "AMBIGUOUS",
+    "question": "Can think be set to extreme?",
+    "must_contain": [],
+    "must_not_contain": ["extreme"],
+    "expected_behavior": "Documented levels are low, medium, high, max (or boolean). Do not accept extreme."
+  }
+]

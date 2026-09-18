@@ -38,3 +38,24 @@ def init_db():
     from app import models  # noqa: F401
 
     Base.metadata.create_all(bind=engine)
+    ensure_chunk_columns()
+
+
+def ensure_chunk_columns() -> None:
+    """Add chunk metadata columns on existing SQLite databases."""
+    if not settings.DATABASE_URL.startswith("sqlite"):
+        return
+    with engine.begin() as conn:
+        rows = conn.exec_driver_sql("PRAGMA table_info(chunks)").fetchall()
+        if not rows:
+            return
+        existing = {row[1] for row in rows}
+        statements = []
+        if "page_start" not in existing:
+            statements.append("ALTER TABLE chunks ADD COLUMN page_start INTEGER")
+        if "page_end" not in existing:
+            statements.append("ALTER TABLE chunks ADD COLUMN page_end INTEGER")
+        if "section" not in existing:
+            statements.append("ALTER TABLE chunks ADD COLUMN section VARCHAR DEFAULT ''")
+        for sql in statements:
+            conn.exec_driver_sql(sql)

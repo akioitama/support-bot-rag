@@ -37,8 +37,14 @@ class Settings(BaseSettings):
     # RAG: split PDFs into pieces, then find the closest pieces for a question.
     CHUNK_SIZE: int = 1200
     CHUNK_OVERLAP: int = 200
+    RAG_MIN_CHUNK_CHARS: int = 200
     RAG_TOP_K: int = 8
-    RAG_MIN_SCORE: float = 0.36
+    RAG_CANDIDATE_K: int = 16
+    RAG_MIN_SCORE: float = 0.30
+    RAG_SCORE_MARGIN: float = 0.08
+    RAG_REJECT_SCORE: float = 0.40
+    RAG_NEIGHBOR_WINDOW: int = 1
+    RAG_PROMPT_K: int = 5
 
     FRONTEND_URL: str = "http://localhost:3000"
 
